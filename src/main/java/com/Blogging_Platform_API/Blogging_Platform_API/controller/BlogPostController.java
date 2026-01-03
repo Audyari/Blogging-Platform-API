@@ -47,7 +47,8 @@ public class BlogPostController {
 
     // PUT - Update an existing blog post
     @PutMapping("/{id}")
-    public ResponseEntity<PostResponse> updateBlogPost(@PathVariable Long id, @Valid @RequestBody PostRequest postRequest) {
+    public ResponseEntity<PostResponse> updateBlogPost(@PathVariable Long id,
+            @Valid @RequestBody PostRequest postRequest) {
         try {
             PostResponse updatedBlogPost = blogPostService.updateBlogPost(id, postRequest);
             return new ResponseEntity<>(updatedBlogPost, HttpStatus.OK);
@@ -67,3 +68,8 @@ public class BlogPostController {
         }
     }
 }
+
+// GET /api/posts : Ambil semua data.
+// POST /api/posts : Buat data baru.
+// PUT /api/posts/{id} : Update data tertentu.
+// DELETE /api/posts/{id} : Hapus data tertentu.
