@@ -56,6 +56,13 @@ public class V2PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    // GET posts with search term
+    @GetMapping(params = "term")
+    public ResponseEntity<List<PostResponse>> searchPosts(@RequestParam String term) {
+        List<PostResponse> posts = postService.searchPosts(term);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
     // GET single post by ID
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {

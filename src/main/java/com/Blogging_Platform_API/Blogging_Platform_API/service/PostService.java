@@ -25,7 +25,16 @@ public class PostService {
 
     public List<PostResponse> getAllPosts() {
         // 3.1. Ambil Data
-        List<Post> posts = postRepository.findAll(); 
+        List<Post> posts = postRepository.findAll();
+        // 3.2. Ubah Data
+        return posts.stream()
+                .map(this::convertToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostResponse> searchPosts(String term) {
+        // 3.1. Ambil Data
+        List<Post> posts = postRepository.findByTitleContainingOrContentContainingOrCategoryContaining(term);
         // 3.2. Ubah Data
         return posts.stream()
                 .map(this::convertToResponseDto)
