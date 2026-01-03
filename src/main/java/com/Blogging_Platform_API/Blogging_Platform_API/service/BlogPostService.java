@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// 1. Ambil Data -> Ubah -> Simpan -> Kembalikan.
+
 @Service
 public class BlogPostService {
 
@@ -39,18 +41,20 @@ public class BlogPostService {
 
     /**
      * Creates a new blog post.
+     * 
      * @param postRequest the blog post request DTO
      * @return the created blog post response DTO (not null)
      */
     public PostResponse createBlogPost(PostRequest postRequest) {
         Post post = convertToEntity(postRequest);
-        Post savedPost = blogPostRepository.save(post);
+        Post savedPost = blogPostRepository.save(post); // Simpan ke database
         return convertToResponseDto(savedPost);
     }
 
     /**
      * Updates an existing blog post.
-     * @param id the ID of the blog post to update
+     * 
+     * @param id          the ID of the blog post to update
      * @param postRequest the updated blog post details
      * @return the updated blog post response DTO (not null)
      */
@@ -65,12 +69,18 @@ public class BlogPostService {
         post.setContent(postRequest.getContent());
         post.setCategory(postRequest.getCategory());
         post.setTags(convertTagsToString(postRequest.getTags()));
-        // createdAt tidak diupdate karena merupakan field yang hanya di-set saat pembuatan
+        // createdAt tidak diupdate karena merupakan field yang hanya di-set saat
+        // pembuatan
 
-        Post updatedPost = blogPostRepository.save(post);
+        Post updatedPost = blogPostRepository.save(post); // Simpan ke database
         return convertToResponseDto(updatedPost);
     }
 
+    /**
+     * Deletes an existing blog post.
+     * 
+     * @param id the ID of the blog post to delete
+     */
     public void deleteBlogPost(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Blog post ID cannot be null");
@@ -78,10 +88,12 @@ public class BlogPostService {
         Post post = blogPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Blog post not found with id: " + id));
 
-        blogPostRepository.delete(post);
+        blogPostRepository.delete(post); // Hapus dari database
     }
 
-    // Helper methods to convert between entities and DTOs
+    /**
+     * Helper methods to convert between entities and DTOs
+     */
     private Post convertToEntity(PostRequest postRequest) {
         Post post = new Post();
         post.setTitle(postRequest.getTitle());
@@ -119,7 +131,8 @@ public class BlogPostService {
             return null;
         }
         try {
-            return objectMapper.readValue(tagsString, new TypeReference<List<String>>() {});
+            return objectMapper.readValue(tagsString, new TypeReference<List<String>>() {
+            });
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting string to tags", e);
         }
