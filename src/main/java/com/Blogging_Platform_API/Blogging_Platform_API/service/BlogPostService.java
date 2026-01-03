@@ -19,23 +19,40 @@ import java.util.stream.Collectors;
 @Service
 public class BlogPostService {
 
+    //1. "Otak" Penyimpanan Data (Dependency Injection)
     @Autowired
     private BlogPostRepository blogPostRepository;
 
+    //2. "Otak" Penyimpanan Data (Dependency Injection)
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Retrieves all blog posts.
+     * 
+     * @return a list of blog post response DTOs (not null)
+     */
     public List<PostResponse> getAllBlogPosts() {
+        // 3.1. Ambil Data
         List<Post> posts = blogPostRepository.findAll();
+        // 3.2. Ubah Data
         return posts.stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a blog post by ID.
+     * 
+     * @param id the ID of the blog post to retrieve
+     * @return an Optional containing the blog post response DTO (not null)
+     */
     public Optional<PostResponse> getBlogPostById(Long id) {
+        // 3.1. Ambil Data
         if (id == null) {
             throw new IllegalArgumentException("Blog post ID cannot be null");
         }
         Optional<Post> post = blogPostRepository.findById(id);
+        // 3.2. Ubah Data
         return post.map(this::convertToResponseDto);
     }
 
@@ -45,9 +62,13 @@ public class BlogPostService {
      * @param postRequest the blog post request DTO
      * @return the created blog post response DTO (not null)
      */
+    // 3. Ambil Data -> Ubah -> Simpan -> Kembalikan.
     public PostResponse createBlogPost(PostRequest postRequest) {
+        // 3.1. Ambil Data
         Post post = convertToEntity(postRequest);
+        // 3.2. Ubah Data
         Post savedPost = blogPostRepository.save(post); // Simpan ke database
+        // 3.3. Kembalikan Data
         return convertToResponseDto(savedPost);
     }
 
@@ -73,6 +94,7 @@ public class BlogPostService {
         // pembuatan
 
         Post updatedPost = blogPostRepository.save(post); // Simpan ke database
+        // 3.3. Kembalikan Data
         return convertToResponseDto(updatedPost);
     }
 
@@ -138,3 +160,8 @@ public class BlogPostService {
         }
     }
 }
+
+//postRepository.findAll();    // Ambil semua
+//postRepository.findById(id); // Cari satu
+//postRepository.save(post);   // Simpan (baik baru maupun update)
+//postRepository.delete(post); // Hapus

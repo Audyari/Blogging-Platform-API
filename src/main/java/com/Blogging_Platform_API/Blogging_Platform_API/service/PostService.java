@@ -17,33 +17,42 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
+    //1. "Otak" Penyimpanan Data (Dependency Injection)
     @Autowired
     private PostRepository postRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<PostResponse> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        // 3.1. Ambil Data
+        List<Post> posts = postRepository.findAll(); 
+        // 3.2. Ubah Data
         return posts.stream()
                 .map(this::convertToResponseDto)
                 .collect(Collectors.toList());
     }
 
     public Optional<PostResponse> getPostById(Long id) {
+        // 3.1. Ambil Data
         if (id == null) {
             throw new IllegalArgumentException("Post ID cannot be null");
         }
         Optional<Post> post = postRepository.findById(id);
+        // 3.2. Ubah Data
         return post.map(this::convertToResponseDto);
     }
 
     public PostResponse createPost(PostRequest postRequest) {
+        // 3.1. Ambil Data
         Post post = convertToEntity(postRequest);
+        // 3.2. Ubah Data
         Post savedPost = postRepository.save(post);
+        // 3.3. Kembalikan Data
         return convertToResponseDto(savedPost);
-    }
+    }   
 
     public PostResponse updatePost(Long id, PostRequest postRequest) {
+        // 3.1. Ambil Data
         if (id == null) {
             throw new IllegalArgumentException("Post ID cannot be null");
         }
@@ -56,10 +65,12 @@ public class PostService {
         post.setTags(convertTagsToString(postRequest.getTags()));
 
         Post updatedPost = postRepository.save(post);
+        // 3.3. Kembalikan Data
         return convertToResponseDto(updatedPost);
     }
 
     public void deletePost(Long id) {
+        // 3.1. Ambil Data
         if (id == null) {
             throw new IllegalArgumentException("Post ID cannot be null");
         }
@@ -92,6 +103,7 @@ public class PostService {
     }
 
     private String convertTagsToString(List<String> tags) {
+        // 3.1. Ambil Data
         if (tags == null || tags.isEmpty()) {
             return null;
         }
@@ -113,3 +125,8 @@ public class PostService {
         }
     }
 }
+
+//postRepository.findAll();    // Ambil semua
+//postRepository.findById(id); // Cari satu
+//postRepository.save(post);   // Simpan (baik baru maupun update)
+//postRepository.delete(post); // Hapus
