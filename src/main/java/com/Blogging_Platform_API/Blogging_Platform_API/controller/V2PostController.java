@@ -67,6 +67,29 @@ public class V2PostController {
         }
     }
 
+    // PUT update post by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponse> updatePost(@PathVariable Long id, @Valid @RequestBody PostRequest postRequest) {
+        try {
+            PostResponse updatedPost = postService.updatePost(id, postRequest);
+            return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            // This handles cases where the post is not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // DELETE post by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        try {
+            postService.deletePost(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // Handle validation errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(

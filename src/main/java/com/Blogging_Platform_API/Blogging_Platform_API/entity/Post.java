@@ -2,6 +2,7 @@ package com.Blogging_Platform_API.Blogging_Platform_API.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "blog_posts")
@@ -37,7 +38,6 @@ public class Post {
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
     }
 
     public Post(String title, String content, String category, String tags) {
@@ -45,18 +45,18 @@ public class Post {
         this.content = content;
         this.category = category;
         this.tags = tags;
-        this.createdAt = LocalDateTime.now();
     }
 
     // Lifecycle callbacks
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now(ZoneId.of("Asia/Jakarta"));
+        updatedAt = LocalDateTime.now(ZoneId.of("Asia/Jakarta"));
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(ZoneId.of("Asia/Jakarta"));
     }
 
     // Getters and Setters

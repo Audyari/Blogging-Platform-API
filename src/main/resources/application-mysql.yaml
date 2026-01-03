@@ -12,5 +12,10 @@ spring:
   h2:
     console:
       enabled: false
+  jackson:
+    time-zone: Asia/Jakarta
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
 server:
   port: 8080
