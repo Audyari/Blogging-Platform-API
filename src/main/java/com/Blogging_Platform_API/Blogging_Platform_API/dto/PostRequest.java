@@ -2,6 +2,7 @@ package com.Blogging_Platform_API.Blogging_Platform_API.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 
 public class PostRequest {
 
@@ -12,17 +13,23 @@ public class PostRequest {
     @NotBlank(message = "Content is required")
     private String content;
 
-    @NotBlank(message = "Author is required")
-    @Size(max = 100, message = "Author name must not exceed 100 characters")
-    private String author;
+    private String category;
+
+    private List<String> tags;
 
     // Constructors
     public PostRequest() {}
 
-    public PostRequest(String title, String content, String author) {
+    public PostRequest(String title, String content) {
         this.title = title;
         this.content = content;
-        this.author = author;
+    }
+
+    public PostRequest(String title, String content, String category, List<String> tags) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.tags = tags;
     }
 
     // Getters and Setters
@@ -42,11 +49,19 @@ public class PostRequest {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getCategory() {
+        return category;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

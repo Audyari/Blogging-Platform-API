@@ -1,24 +1,27 @@
 package com.Blogging_Platform_API.Blogging_Platform_API.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostResponse {
 
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private String category;
+    private List<String> tags;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     // Constructors
     public PostResponse() {}
 
-    public PostResponse(Long id, String title, String content, String author, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PostResponse(Long id, String title, String content, String category, List<String> tags, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.category = category;
+        this.tags = tags;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -48,12 +51,20 @@ public class PostResponse {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getCategory() {
+        return category;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public LocalDateTime getCreatedAt() {

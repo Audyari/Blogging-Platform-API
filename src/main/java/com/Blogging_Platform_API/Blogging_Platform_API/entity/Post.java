@@ -4,37 +4,47 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "blog_posts") // 1. Membuat table di database
+@Table(name = "blog_posts")
 public class Post {
 
-    @Id // 2. Membuat primary key
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) // 3. Membuat column di table
+    @Column(nullable = false)
     private String title;
 
-    @Lob // 4. Membuat column di table
+    @Lob
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(nullable = false) // 3. Membuat column di table
-    private String author;
+    @Column
+    private String category;
 
-    @Column(name = "created_at", nullable = false, updatable = false) // 3. Membuat column di table
+    @Column(name = "tags", columnDefinition = "TEXT")
+    private String tags; // Menyimpan tags sebagai string JSON
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at") // 3. Membuat column di table
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     // Constructors
     public Post() {
     }
 
-    public Post(String title, String content, String author) {
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Post(String title, String content, String category, String tags) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.tags = tags;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -74,12 +84,20 @@ public class Post {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getCategory() {
+        return category;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public LocalDateTime getCreatedAt() {

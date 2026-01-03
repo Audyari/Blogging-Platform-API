@@ -6,6 +6,9 @@ import com.Blogging_Platform_API.Blogging_Platform_API.entity.Post;
 import com.Blogging_Platform_API.Blogging_Platform_API.repository.BlogPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +19,8 @@ public class BlogPostService {
 
     @Autowired
     private BlogPostRepository blogPostRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<PostResponse> getAllBlogPosts() {
         List<Post> posts = blogPostRepository.findAll();
@@ -58,7 +63,8 @@ public class BlogPostService {
 
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());
-        post.setAuthor(postRequest.getAuthor());
+        post.setCategory(postRequest.getCategory());
+        post.setTags(convertTagsToString(postRequest.getTags()));
         // createdAt tidak diupdate karena merupakan field yang hanya di-set saat pembuatan
 
         Post updatedPost = blogPostRepository.save(post);
@@ -80,7 +86,8 @@ public class BlogPostService {
         Post post = new Post();
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());
-        post.setAuthor(postRequest.getAuthor());
+        post.setCategory(postRequest.getCategory());
+        post.setTags(convertTagsToString(postRequest.getTags()));
         return post;
     }
 
@@ -89,9 +96,32 @@ public class BlogPostService {
         response.setId(post.getId());
         response.setTitle(post.getTitle());
         response.setContent(post.getContent());
-        response.setAuthor(post.getAuthor());
+        response.setCategory(post.getCategory());
+        response.setTags(convertStringToTags(post.getTags()));
         response.setCreatedAt(post.getCreatedAt());
         response.setUpdatedAt(post.getUpdatedAt());
         return response;
+    }
+
+    private String convertTagsToString(List<String> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return null;
+        }
+        try {
+            return objectMapper.writeValueAsString(tags);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting tags to string", e);
+        }
+    }
+
+    private List<String> convertStringToTags(String tagsString) {
+        if (tagsString == null || tagsString.isEmpty()) {
+            return null;
+        }
+        try {
+            return objectMapper.readValue(tagsString, new TypeReference<List<String>>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting string to tags", e);
+        }
     }
 }
