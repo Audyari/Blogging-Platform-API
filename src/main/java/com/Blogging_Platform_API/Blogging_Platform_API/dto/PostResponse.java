@@ -5,6 +5,7 @@ import java.util.List;
 
 public class PostResponse {
 
+    // Deklarasi Variabel yang penting.
     private Long id;
     private String title;
     private String content;
@@ -14,9 +15,11 @@ public class PostResponse {
     private LocalDateTime updatedAt;
 
     // Constructors
-    public PostResponse() {}
+    public PostResponse() {
+    }
 
-    public PostResponse(Long id, String title, String content, String category, List<String> tags, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PostResponse(Long id, String title, String content, String category, List<String> tags,
+            LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.content = content;

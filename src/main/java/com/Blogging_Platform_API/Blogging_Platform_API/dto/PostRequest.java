@@ -4,10 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
+// Melindungi Aplikasi dari Data Sampah (Validasi).
 public class PostRequest {
 
-    @NotBlank(message = "Title is required")
-    @Size(max = 255, message = "Title must not exceed 255 characters")
+    @NotBlank(message = "Title is required") // 1. Validasi
+    @Size(max = 255, message = "Title must not exceed 255 characters") // 2. Validasi
     private String title;
 
     @NotBlank(message = "Content is required")
@@ -18,7 +19,8 @@ public class PostRequest {
     private List<String> tags;
 
     // Constructors
-    public PostRequest() {}
+    public PostRequest() {
+    }
 
     public PostRequest(String title, String content) {
         this.title = title;

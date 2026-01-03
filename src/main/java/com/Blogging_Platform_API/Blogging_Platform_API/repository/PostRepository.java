@@ -7,3 +7,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 }
+
+// Spring "membelikan" kamu 20+ metode kerja siap pakai secara otomatis:
+// save() (Simpan)
+// findAll() (Ambil Semua)
+// findById() (Cari Satu)
+// deleteById() (Hapus)
+// count() (Hitung jumlah)
+// ...dan banyak lagi.
